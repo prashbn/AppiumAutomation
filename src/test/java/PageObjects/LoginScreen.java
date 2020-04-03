@@ -8,10 +8,10 @@ import org.openqa.selenium.By;
 
 public class LoginScreen {
 
-    //String id_ap_email_login_icon = "ap_email_login_icon";
+    String id_ap_email_login_icon = "ap_email_login_icon";
     String id_ap_email_login_txtBox = "ap_email_login";
-    String xpath_ap_email_login_txtBox = "//android.widget.EditText[@index='0']";
     String id_continue_button = "continue";
+    //Use this add_account when using app-store
     String add_account = "//android.widget.Button[@content-desc=\"Add Account\"]";
 
     FluentWaitUtil fluentWaitUtil = new FluentWaitUtil();
@@ -24,7 +24,7 @@ public class LoginScreen {
      * @TODO Verify later if there are different ways to locate the current screen
      */
     public Boolean verifyIfInWLoginScreen(MobileDriver driver) {
-        return (fluentWaitUtil.isElementDisplayedByXpath(driver, xpath_ap_email_login_txtBox, 30));
+        return (fluentWaitUtil.isElementDisplayedById(driver, id_ap_email_login_txtBox, 30));
     }
 
     /**
@@ -33,8 +33,8 @@ public class LoginScreen {
      * @param driver
      */
     public LoginScreen clearAnyPreExistingText(MobileDriver driver) {
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, xpath_ap_email_login_txtBox, 30)) {
-            driver.findElement(By.id(xpath_ap_email_login_txtBox)).clear();
+        if (fluentWaitUtil.isElementDisplayedById(driver, id_ap_email_login_txtBox, 30)) {
+            driver.findElement(By.id(id_ap_email_login_txtBox)).clear();
         }
         return this;
     }
@@ -47,8 +47,8 @@ public class LoginScreen {
      * @TODO Parametrise once you have everything working
      */
     public LoginScreen enterLoginUserName(MobileDriver driver, String userName) {
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, xpath_ap_email_login_txtBox, 30)) {
-            driver.findElement(By.xpath(xpath_ap_email_login_txtBox)).sendKeys(userName);
+        if (fluentWaitUtil.isElementDisplayedById(driver, id_ap_email_login_txtBox, 30)) {
+            driver.findElement(By.xpath(id_ap_email_login_txtBox)).sendKeys(userName);
         }
         return this;
     }
@@ -64,7 +64,8 @@ public class LoginScreen {
     }
 
     /**
-     * Method toadd a new user
+     * Method to select ADD Account
+     *
      * @param driver
      * @return
      */
@@ -75,6 +76,4 @@ public class LoginScreen {
         return this;
 
     }
-
-
 }
