@@ -1,18 +1,14 @@
 package PageObjects;
 
-/*import ReusableComponents.ObjectActions;
-import org.openqa.selenium.WebElement;*/
-
 import io.appium.java_client.MobileDriver;
 import org.openqa.selenium.By;
 
 public class LoginScreen {
 
-    String id_ap_email_login_icon = "ap_email_login_icon";
+   // String id_ap_email_login_icon = "ap_email_login_icon";
     String id_ap_email_login_txtBox = "ap_email_login";
     String id_continue_button = "continue";
-    //Use this add_account when using app-store
-    String add_account = "//android.widget.Button[@content-desc=\"Add Account\"]";
+    //String add_account = "//android.widget.Button[@content-desc=\"Add Account\"]";
 
     FluentWaitUtil fluentWaitUtil = new FluentWaitUtil();
 
