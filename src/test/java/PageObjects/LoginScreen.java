@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 
 public class LoginScreen {
 
-   // String id_ap_email_login_icon = "ap_email_login_icon";
+    // String id_ap_email_login_icon = "ap_email_login_icon";
     String id_ap_email_login_txtBox = "ap_email_login";
     String id_continue_button = "continue";
     //String add_account = "//android.widget.Button[@content-desc=\"Add Account\"]";
@@ -44,7 +44,7 @@ public class LoginScreen {
      */
     public LoginScreen enterLoginUserName(MobileDriver driver, String userName) {
         if (fluentWaitUtil.isElementDisplayedById(driver, id_ap_email_login_txtBox, 30)) {
-            driver.findElement(By.xpath(id_ap_email_login_txtBox)).sendKeys(userName);
+            driver.findElement(By.id(id_ap_email_login_txtBox)).sendKeys(userName);
         }
         return this;
     }

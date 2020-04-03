@@ -1,3 +1,4 @@
+import PageObjects.HomePage;
 import PageObjects.LoginScreen;
 import PageObjects.WelcomeScreen;
 import io.appium.java_client.MobileDriver;
@@ -23,6 +24,7 @@ public class SampleTesting {
 
     WelcomeScreen welcomeScreen = new WelcomeScreen();
     LoginScreen loginScreen = new LoginScreen();
+    HomePage homePage = new HomePage();
 
 
     @BeforeClass
@@ -45,19 +47,21 @@ public class SampleTesting {
         //Verify if the elements we are expecting in welcome screen in present
         Assert.assertTrue(welcomeScreen.verifyIfInWelcomeScreen(driver));
         //Uncomment the existing step if you want to continue with existing logged in user
-        //welcomeScreen.clickContinue(driver);
-        welcomeScreen.clickCToUseADifferentUser(driver);
+        welcomeScreen.clickContinueForLoggedUser(driver);
+        //welcomeScreen.clickCToUseADifferentUser(driver);
         //uncomment this if you have downloaded it from app store
         //loginScreen.clickAddAccount(driver);
-        Set<String> contextNames = driver.getContextHandles();
+   /*     Set<String> contextNames = driver.getContextHandles();
         for (String contextName : contextNames) {
             System.out.println(contextName); //prints out something like NATIVE_APP \n WEBVIEW_1
         }
-        driver.context(contextNames.toArray()[1].toString());
-        Assert.assertTrue(loginScreen.verifyIfInWLoginScreen(driver));
+        driver.context(contextNames.toArray()[1].toString());*/
+        //Assert.assertTrue(loginScreen.verifyIfInWLoginScreen(driver));
         //No assertion required if exist clear the text box
-        loginScreen.clearAnyPreExistingText(driver);
+        //loginScreen.clearAnyPreExistingText(driver);
         //From assert statement above we knew this userName object exists or not, no need to reassert it
-        loginScreen.enterLoginUserName(driver, "prashbn@gmail.com").clickContinue(driver);
+        //loginScreen.enterLoginUserName(driver, "prashbn@gmail.com").clickContinue(driver);
+        homePage.enterLoginUserName(driver, "65-inch TV").selectItemsFromListView(driver,0);
+
     }
 }
