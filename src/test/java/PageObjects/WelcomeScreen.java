@@ -4,7 +4,10 @@ import io.appium.java_client.MobileDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
-
+/**
+ * This class should contain elements and action in welcome screen
+ * @author prash
+ */
 public class WelcomeScreen implements AppiumTestingCore {
     private MobileDriver driver;
 

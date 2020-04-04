@@ -10,12 +10,16 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * Use this class only for fluent waits, include by different attributes if required
+ * @author prash
+ */
 public class FluentWaitUtil {
 
     final static Logger logger = Logger.getLogger(FluentWaitUtil.class);
 
     /**
-     * Returns a boolean value, when elements is located.
+     * Returns a boolean value, when elements located.
      *
      * @param driver
      * @param locator
@@ -34,7 +38,7 @@ public class FluentWaitUtil {
     }
 
     /**
-     * Returns a boolean value, when elements is located by XPATH.
+     * Returns a boolean value, when elements located by XPATH.
      *
      * @param driver
      * @param locator
@@ -53,7 +57,7 @@ public class FluentWaitUtil {
     }
 
     /**
-     * Returns a boolean value, when elements is located by LinkText.
+     * Returns a boolean value, when elements located by LinkText.
      *
      * @param driver
      * @param locator
@@ -72,7 +76,7 @@ public class FluentWaitUtil {
     }
 
     /**
-     * Poll for elements to be present in the page
+     * Poll/wait until element found
      *
      * @param driver
      * @param locator
@@ -82,7 +86,7 @@ public class FluentWaitUtil {
     private FluentWait<MobileDriver> fluentWait(MobileDriver driver, String locator, int time) {
         return new FluentWait<MobileDriver>(driver)
                 .withTimeout(time, SECONDS)
-                .pollingEvery(5, SECONDS) //Set query/check/control interval
+                .pollingEvery(5, SECONDS)
                 .ignoring(NoSuchElementException.class)
                 .withMessage(locator + "Element Not Present");
     }

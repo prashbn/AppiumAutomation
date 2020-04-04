@@ -3,6 +3,10 @@ package PageObjects;
 import io.appium.java_client.MobileDriver;
 import org.openqa.selenium.By;
 
+/**
+ * This class should contain elements and action in Login screen
+ * @author prash
+ */
 public class LoginScreen implements AppiumTestingCore {
 
     private MobileDriver driver;
