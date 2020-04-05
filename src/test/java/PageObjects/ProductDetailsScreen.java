@@ -25,7 +25,7 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
     String seeAllBuyingOptionXpath = "//android.widget.Button[@text='See All Buying Options']";
 
-    String productDescriptionXpath ="//android.view.View[@resource-id='title_feature_div']/android.view.View[@index='1']";
+    String productDescriptionXpath ="//android.view.View[@resource-id='title']";
 
     String productPriceXpath ="//android.view.View[@resource-id='priceblock_ourprice']";
 
@@ -62,7 +62,7 @@ public class ProductDetailsScreen implements AppiumTestingCore {
     }
 
     public ProductDetailsScreen findProductDescription() {
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, seeAllBuyingOptionXpath, 10)) {
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, productDescriptionXpath, 20)) {
             setProductDescription(driver.findElement(By.xpath(productDescriptionXpath)).getText());
         }
         return this;
@@ -119,7 +119,7 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
             if (fluentWaitUtil.isElementDisplayedByXpath(driver, seeAllBuyingOptionXpath, 10)) {
                 driver.findElement(By.xpath(seeAllBuyingOptionXpath)).click();
-                findProductPriceInBuyingOption();
+              findProductPriceInBuyingOption();
                 swipeToLocateByText("Add to Cart").click();
                 return true;
             }
@@ -136,7 +136,7 @@ public class ProductDetailsScreen implements AppiumTestingCore {
     public void findProductPriceInBuyingOption() {
         //Regular expressing for $amount E.g $1,200.00
         String regex = "^(\\$|)([1-9]+\\d{0,2}(\\,\\d{3})*|([1-9]+\\d*))(\\.\\d{2})?$";
-        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));
+        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text!='']"));
         for (WebElement element : textElementsNotEmpty) {
             if (element.getText().matches(regex)) {
                 setProductPrice(element.getText());

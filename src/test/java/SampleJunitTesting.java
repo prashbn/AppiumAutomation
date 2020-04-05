@@ -1,5 +1,6 @@
 import PageObjects.*;
 import io.appium.java_client.MobileDriver;
+import org.apache.log4j.Logger;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -8,6 +9,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(JUnit4.class)
@@ -16,6 +18,7 @@ import java.util.List;
  * @author prash
  */
 public class SampleJunitTesting extends AppiumDriverSetupForTest {
+    final static Logger logger = Logger.getLogger(SampleJunitTesting.class);
 
     static MobileDriver driver;
 
@@ -92,10 +95,12 @@ public class SampleJunitTesting extends AppiumDriverSetupForTest {
      * @return
      */
     public Boolean validateDescription() {
-
+        logger.info("Product description from product page" + productDetailsPage.getProductDescription("productDescription"));
         List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));
+
         for (WebElement element : textElementsNotEmpty) {
-            if (element.getText().replace("...", "").contains(productDetailsPage.getProductPrice("productPrice"))) {
+            logger.info("$ Product description in the screen :" + element.getText());
+            if ((productDetailsPage.getProductDescription("productDescription").contains(element.getText().replace("...", "").trim()))) {
                 return true;
             }
         }
@@ -103,20 +108,20 @@ public class SampleJunitTesting extends AppiumDriverSetupForTest {
     }
 
     /**
-     * Checks total and product price, can implement swipe to text
-     *
      * @return
+     * @TODO Checks total and product price, can implement swipe to text if there are multiple products
      */
     public Boolean validatePrice() {
-        List<WebElement> textElementsNotEmpty = null;
+        List<WebElement> textElementsNotEmpty = new ArrayList<WebElement>();
+        logger.info("Price from product page : " + productDetailsPage.getProductPrice("productPrice"));
 
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@text='\" + productDetailsPage.getProductPrice(\"productPrice\") + \"']", 10)) {
-            textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice") + "']"));
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice").trim() + "']", 20)) {
+            textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice").trim() + "']"));
         }
-        //Regular expressing for $amount E.g $1,200.00
-/*        String regex = "^(\\$|)([1-9]+\\d{0,2}(\\,\\d{3})*|([1-9]+\\d*))(\\.\\d{2})?$";
-        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));*/
+        if (textElementsNotEmpty.isEmpty())
+            return false;
         for (WebElement element : textElementsNotEmpty) {
+            logger.info("$ Amount present in the screen " + element.getText());
             if (element.getText().equals(productDetailsPage.getProductPrice("productPrice"))) {
                 return true;
             }
