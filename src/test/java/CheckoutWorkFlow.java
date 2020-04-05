@@ -22,7 +22,7 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
     HomeScreen homePage = new HomeScreen();
     ProductDetailsScreen productDetailsPage = new ProductDetailsScreen();
     TopMenuActionItems topMenuActionItems = new TopMenuActionItems();
-    CheckOutPage checkOutPage = new CheckOutPage();
+    CheckOutAndCartPage checkOutAndCartPage = new CheckOutAndCartPage();
 
     @Before
     /**
@@ -36,19 +36,19 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
         homePage.initializeDriver(driver);
         searchProductDisplay.initializeDriver(driver);
         productDetailsPage.initializeDriver(driver);
-        checkOutPage.initializeDriver(driver);
+        checkOutAndCartPage.initializeDriver(driver);
         topMenuActionItems.initializeDriver(driver);
         //TODO need to tweak how the elements are located as this would cause issues in landscape mode, not today.
     }
 
 
     @Given("The Amazon app installed and launched")
-    public void the_Amazon_app_installed_and_launched() throws Exception {
+    public void the_Amazon_app_installed_and_launched() {
         AppiumDriverSetupForTest appiumDriverSetupForTest = new AppiumDriverSetupForTest();
     }
 
     @When("^the user logins in the app with Username \"([^\"]*)\" and Password \"([^\"]*)\"$")
-    public void theUserLoginsInTheAppWithUsernameAndPassword(String arg0, String arg1) throws Throwable {
+    public void theUserLoginsInTheAppWithUsernameAndPassword(String arg0, String arg1) {
         Assert.assertTrue(welcomeScreen.verifyIfInWelcomeScreen());
         //Uncomment the existing step if you want to continue with existing logged in user
         //welcomeScreen.clickContinueForLoggedUser(driver);
@@ -59,7 +59,11 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
     }
 
     @Then("^the user should be able to search a productName \"([^\"]*)\" and filter based on FilterValue \"([^\"]*)\"$")
-    public void theUserShouldBeAbleToSearchAProductNameAndFilterBasedOnFilterValue(String arg0, String arg1) throws Throwable {
+    public void theUserShouldBeAbleToSearchAProductNameAndFilterBasedOnFilterValue(String arg0, String arg1) {
+        //Clear previous items in cart
+        topMenuActionItems.openCartItems();
+        checkOutAndCartPage.clearCartItems();
+        topMenuActionItems.openMainMenu().goToHomeScreen();
         //From assert statement above we knew this userName object exists or not, no need to reassert it
         homePage.enterSearchString(arg0).selectItemsFromListView(arg0);
         searchProductDisplay.enableProductFilter(arg1).swipeRandom().selectARandomProduct();
@@ -77,7 +81,7 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
         Assert.assertTrue(validatePrice());
         Assert.assertTrue(validateDescription());
         //Verify if the price and description matches in the result screen
-        checkOutPage.clickProceedToCheckout();
+        checkOutAndCartPage.clickProceedToCheckout();
         //Not placing order with my details, this is easy to implement.
     }
 
@@ -98,20 +102,20 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
     }
 
     /**
-     * TODO This is not clean, but this solution works. Need to figure out the relative path to get the item price. Comeback to this once feature file is created
+     * Checks total and product price, can implement swipe to text
      *
      * @return
      */
     public Boolean validatePrice() {
+        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice") + "']"));
         //Regular expressing for $amount E.g $1,200.00
-        String regex = "^(\\$|)([1-9]+\\d{0,2}(\\,\\d{3})*|([1-9]+\\d*))(\\.\\d{2})?$";
-        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));
+/*        String regex = "^(\\$|)([1-9]+\\d{0,2}(\\,\\d{3})*|([1-9]+\\d*))(\\.\\d{2})?$";
+        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));*/
         for (WebElement element : textElementsNotEmpty) {
-            if (element.getText().matches(regex) && element.getText().equals(productDetailsPage.getProductPrice("productPrice"))) {
-                if (element.getText().matches(regex)) {
-                    return true;
-                }
+            if (element.getText().equals(productDetailsPage.getProductPrice("productPrice"))) {
+                return true;
             }
+            return false;
         }
         return false;
     }

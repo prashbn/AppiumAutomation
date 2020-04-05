@@ -1,4 +1,4 @@
-Feature: The user should be able to login  and the screen must request for a username and password
+Feature: The user should be able to login and update
 
 
   @Regression

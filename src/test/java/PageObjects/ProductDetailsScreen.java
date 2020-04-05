@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class ProductDetailsScreen implements AppiumTestingCore {
 
+    final static Logger logger = Logger.getLogger(ProductDetailsScreen.class);
+
     private MobileDriver driver;
 
     FluentWaitUtil fluentWaitUtil = new FluentWaitUtil();
@@ -26,8 +28,6 @@ public class ProductDetailsScreen implements AppiumTestingCore {
     String productDescriptionXpath ="//android.view.View[@resource-id='title_feature_div']/android.view.View[@index='1']";
 
     String productPriceXpath ="//android.view.View[@resource-id='priceblock_ourprice']";
-
-    final static Logger logger = Logger.getLogger(ProductDetailsScreen.class);
 
     HashMap<String, String> selectedProductDetail = new HashMap<>();
 

@@ -86,7 +86,7 @@ public class FluentWaitUtil {
     private FluentWait<MobileDriver> fluentWait(MobileDriver driver, String locator, int time) {
         return new FluentWait<MobileDriver>(driver)
                 .withTimeout(time, SECONDS)
-                .pollingEvery(5, SECONDS)
+                .pollingEvery(2, SECONDS)
                 .ignoring(NoSuchElementException.class)
                 .withMessage(locator + "Element Not Present");
     }

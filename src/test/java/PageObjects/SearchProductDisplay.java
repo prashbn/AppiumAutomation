@@ -18,11 +18,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SearchProductDisplay implements AppiumTestingCore {
 
+    final static Logger logger = Logger.getLogger(SearchProductDisplay.class);
+
     private MobileDriver driver;
 
     String searchResultView_xPath = "//android.view.View[@resource-id='a-page']";
-
-    final static Logger logger = Logger.getLogger(SearchProductDisplay.class);
 
     @Override
     public void initializeDriver(MobileDriver driver) {
@@ -42,7 +42,7 @@ public class SearchProductDisplay implements AppiumTestingCore {
      */
     public SearchProductDisplay selectProductFromList(String textToSearch, int occurrences) {
 
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, searchResultView_xPath, 30)) {
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, searchResultView_xPath, 10)) {
             MobileElement element = swipeFindsElementByResourceIdAndText("search", textToSearch, occurrences);
             selectedProductionDescription = element.getText();
             element.click();
@@ -57,7 +57,7 @@ public class SearchProductDisplay implements AppiumTestingCore {
      * @return
      */
     public SearchProductDisplay enableProductFilter(String filterText) {
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 30)) {
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 10)) {
             driver.findElement(By.xpath("//android.view.View[@resource-id='s-all-filters']")).click();
             //TODO filter-s-all-filters why can't i swipe inside this view with this resource which is more solid than the below search just by text.
             swipeToLocateByText("Department", "1");
@@ -88,7 +88,7 @@ public class SearchProductDisplay implements AppiumTestingCore {
 
 
     /**
-     * Search a element based on resource and text and occurance
+     * Search a element based on resource and text and occurrences
      *
      * @param resource
      * @param searchText
@@ -125,7 +125,7 @@ public class SearchProductDisplay implements AppiumTestingCore {
         int duration = 2000;
 
         int value = ThreadLocalRandom.current().nextInt(2, 6);
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 30)) {
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 10)) {
             logger.info("Performing random swipe : " + value);
             for (int i = 0; i < value; i++) {
                 driver.swipe(width, startPoint, width, endPoint, duration);

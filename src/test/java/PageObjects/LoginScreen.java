@@ -1,6 +1,7 @@
 package PageObjects;
 
 import io.appium.java_client.MobileDriver;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
 /**
@@ -10,6 +11,8 @@ import org.openqa.selenium.By;
 public class LoginScreen implements AppiumTestingCore {
 
     private MobileDriver driver;
+
+    final static Logger logger = Logger.getLogger(LoginScreen.class);
 
     @Override
     public void initializeDriver(MobileDriver driver) {
@@ -31,7 +34,7 @@ public class LoginScreen implements AppiumTestingCore {
      * @TODO Verify later if there are different ways to locate the current screen
      */
     public Boolean verifyIfInWLoginScreen() {
-        return (fluentWaitUtil.isElementDisplayedByXpath(driver, resource_id_ap_email_login_txtBox_xPath, 30));
+        return (fluentWaitUtil.isElementDisplayedByXpath(driver, resource_id_ap_email_login_txtBox_xPath, 10));
     }
 
     /**
@@ -41,7 +44,7 @@ public class LoginScreen implements AppiumTestingCore {
      * @TODO Verify later if there are different ways to locate the current screen
      */
     public Boolean verifyIfInPasswordScreen() {
-        return (fluentWaitUtil.isElementDisplayedByXpath(driver, resource_id_ap_login_password_txtBox_xPath, 30));
+        return (fluentWaitUtil.isElementDisplayedByXpath(driver, resource_id_ap_login_password_txtBox_xPath, 10));
     }
 
     /**
@@ -83,7 +86,7 @@ public class LoginScreen implements AppiumTestingCore {
      * @return
      */
     public LoginScreen clickAddAccount() {
-        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.widget.Button[@content-desc=\"Add Account\"]", 30)) {
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.widget.Button[@content-desc=\"Add Account\"]", 10)) {
             driver.findElement(By.xpath("//android.widget.Button[@content-desc=\"Add Account\"]")).click();
         }
         return this;
