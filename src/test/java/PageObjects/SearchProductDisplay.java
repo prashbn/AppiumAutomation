@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class should contain elements and action in search product
+ *
  * @author prash
  */
 public class SearchProductDisplay implements AppiumTestingCore {
@@ -50,16 +51,17 @@ public class SearchProductDisplay implements AppiumTestingCore {
     }
 
     /**
-     * TODO This isn't working as expected, need to figure out a way to scroll on this view
+     * TODO Enable swipe with a specific resource and search text
      *
      * @param filterText
      * @return
      */
-    @Deprecated
     public SearchProductDisplay enableProductFilter(String filterText) {
         if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 30)) {
             driver.findElement(By.xpath("//android.view.View[@resource-id='s-all-filters']")).click();
-            swipeToLocateByText(filterText).click();
+            //TODO filter-s-all-filters why can't i swipe inside this view with this resource which is more solid than the below search just by text.
+            swipeToLocateByText("Department", "1");
+            driver.findElement(By.xpath("//android.view.View[@text='" + filterText + "']")).click();
         }
         return this;
     }
@@ -91,12 +93,12 @@ public class SearchProductDisplay implements AppiumTestingCore {
      * @param resource
      * @param searchText
      */
-    private MobileElement swipeFindsElementByResourceIdAndText(String resource, String searchText, int occurance) {
+    private MobileElement swipeFindsElementByResourceIdAndText(String resource, String searchText, int occurrences) {
         MobileElement element = null;
         try {
             element = (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator(
                     "new UiScrollable(new UiSelector().resourceId(\"" + resource + "\")).scrollIntoView("
-                            + "new UiSelector().textContains(\"" + searchText + "\").instance(" + occurance + "))"));
+                            + "new UiSelector().textContains(\"" + searchText + "\").instance(" + occurrences + "))"));
 
         } catch (Exception e) {
 
@@ -105,15 +107,9 @@ public class SearchProductDisplay implements AppiumTestingCore {
     }
 
 
-    /**
-     * Swipe the first visible view and try to locate the element based on text
-     *
-     * @param searchText
-     * @return
-     */
-    private MobileElement swipeToLocateByText(String searchText) {
+    private MobileElement swipeToLocateByText(String searchText, String viewInstance) {
 
-        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"" + searchText + "\").instance(0))"));
+        return (MobileElement) driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(" + viewInstance + ")).scrollIntoView(new UiSelector().textContains(\"" + searchText + "\").instance(0))"));
 
     }
 
@@ -128,10 +124,12 @@ public class SearchProductDisplay implements AppiumTestingCore {
         int endPoint = (int) (size.getHeight() * 0.20);
         int duration = 2000;
 
-        int value = ThreadLocalRandom.current().nextInt(1, 6);
-        logger.info("Performing random swipe : " + value);
-        for (int i = 0; i < value; i++) {
-            driver.swipe(width, startPoint, width, endPoint, duration);
+        int value = ThreadLocalRandom.current().nextInt(2, 6);
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@resource-id='a-page']", 30)) {
+            logger.info("Performing random swipe : " + value);
+            for (int i = 0; i < value; i++) {
+                driver.swipe(width, startPoint, width, endPoint, duration);
+            }
         }
         return this;
     }
