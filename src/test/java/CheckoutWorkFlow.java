@@ -32,7 +32,7 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
 
     @Before
     /**
-     * @TODO Should autowire things rather than creating objects, need to sprinfigy, Need more work and time pff?
+     * @TODO Should autowire things rather than creating objects, need to sprinfigy, Need more work?
      */
     public void initializeDriverInOtherClasses() throws MalformedURLException {
         AppiumDriverSetupForTest appiumDriverSetupForTest = new AppiumDriverSetupForTest();
