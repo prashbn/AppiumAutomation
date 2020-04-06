@@ -59,7 +59,7 @@ public class SampleJunitTesting extends AppiumDriverSetupForTest {
     public void firstStep() {
         String searchItemName = "65-Inch TV";
         String loginName = "prashbn@gmail.com";
-        String password = "Enabled14$";
+        String password = "XXXXXXX";
         String filterBy = "TVs";
         //Verify if the elements we are expecting in welcome screen in present
         Assert.assertTrue(welcomeScreen.verifyIfInWelcomeScreen());

@@ -12,4 +12,4 @@ Feature: The user should be able to login and update
 
     Examples:
      |userName         ||password    ||productName||filterValue|
-     |prashbn@gmail.com||Enabled14$   ||65-Inch TV ||TVs        |
+     |prashbn@gmail.com||XXXXXXX   ||65-Inch TV ||TVs        |
