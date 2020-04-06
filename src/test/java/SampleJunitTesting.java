@@ -96,7 +96,7 @@ public class SampleJunitTesting extends AppiumDriverSetupForTest {
      */
     public Boolean validateDescription() {
         logger.info("Product description from product page" + productDetailsPage.getProductDescription("productDescription"));
-        if (productDetailsPage.getProductDescription("NO DESCRIPTION FOUND").contains("NO DESCRIPTION FOUND")) {
+        if (productDetailsPage.getProductDescription("productDescription").equals("NO DESCRIPTION FOUND")) {
             return false;
         }
         List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));
