@@ -25,9 +25,9 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
     String seeAllBuyingOptionXpath = "//android.widget.Button[@text='See All Buying Options']";
 
-    String productDescriptionXpath ="//android.view.View[@resource-id='title']";
+    String productDescriptionXpath = "//android.view.View[@resource-id='title']";
 
-    String productPriceXpath ="//android.view.View[@resource-id='priceblock_ourprice']";
+    String productPriceXpath = "//android.view.View[@resource-id='priceblock_ourprice']";
 
     HashMap<String, String> selectedProductDetail = new HashMap<>();
 
@@ -48,22 +48,25 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
     /**
      * Method to find product price on product details screen, price doesn't appear to be displayed when the buying option is displayed. reattempt in buying option screen.
+     *
      * @return
      */
     public ProductDetailsScreen findProductPrice() {
         //if there are buying option, price won't be displayed.
-      try{
+        try {
             setProductPrice(driver.findElement(By.xpath(productPriceXpath)).getText());
+        } catch (Exception e) {
+            logger.info("Price not found on this screen, will reattempt, possible price in buy option.");
         }
-      catch (Exception e){
-          logger.info("Price not found on this screen, will reattempt when adding to cart, possible location in buy option.");
-      }
         return this;
     }
 
     public ProductDetailsScreen findProductDescription() {
         if (fluentWaitUtil.isElementDisplayedByXpath(driver, productDescriptionXpath, 20)) {
             setProductDescription(driver.findElement(By.xpath(productDescriptionXpath)).getText());
+        }
+        else{
+            setProductDescription("NO DESCRIPTION FOUND");
         }
         return this;
     }
@@ -119,7 +122,7 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
             if (fluentWaitUtil.isElementDisplayedByXpath(driver, seeAllBuyingOptionXpath, 10)) {
                 driver.findElement(By.xpath(seeAllBuyingOptionXpath)).click();
-              findProductPriceInBuyingOption();
+                findProductPriceInBuyingOption();
                 swipeToLocateByText("Add to Cart").click();
                 return true;
             }
@@ -131,16 +134,21 @@ public class ProductDetailsScreen implements AppiumTestingCore {
 
     /**
      * This works only when one buying option is available, multiple option mean need to store corresponding $ value of the selected option.
+     *
      * @TODO update this method to work with multiple buying option when required.
      */
     public void findProductPriceInBuyingOption() {
         //Regular expressing for $amount E.g $1,200.00
         String regex = "^(\\$|)([1-9]+\\d{0,2}(\\,\\d{3})*|([1-9]+\\d*))(\\.\\d{2})?$";
-        List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text!='']"));
-        for (WebElement element : textElementsNotEmpty) {
-            if (element.getText().matches(regex)) {
-                setProductPrice(element.getText());
-                break;
+        logger.info("Trying to locate price under buying option");
+        if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@text!='']", 10)) {
+            List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text!='']"));
+            for (WebElement element : textElementsNotEmpty) {
+                logger.info("Locating product price :" + element.getText());
+                if (element.getText().matches(regex)) {
+                    setProductPrice(element.getText());
+                    break;
+                }
             }
         }
         //test using this method likely to fail.

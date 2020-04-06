@@ -29,6 +29,7 @@ public class CheckOutAndCartPage implements AppiumTestingCore {
 
     /**
      * Click to proceed to checkout
+     *
      * @return
      */
     public CheckOutAndCartPage clickProceedToCheckout() {
@@ -38,13 +39,15 @@ public class CheckOutAndCartPage implements AppiumTestingCore {
 
     /**
      * Delete all items in cart
+     *
      * @return
      */
     public CheckOutAndCartPage clearCartItems() {
-        checkIfCartEmpty();
-        while (itemsInCart) {
-            logger.info("Deleting elements from cart");
-            swipeFindsElementByText("Delete");
+        if (!checkIfCartEmpty()) {
+            while (itemsInCart) {
+                logger.info("Deleting elements from cart");
+                swipeFindsElementByText("Delete");
+            }
         }
         return this;
     }
@@ -58,6 +61,12 @@ public class CheckOutAndCartPage implements AppiumTestingCore {
         MobileElement element = null;
         try {
             driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"" + searchText + "\").instance(0))")).click();
+            //Avoid additional scrolling, implementing just scroll to text has some issue as it clicks on a random product from the cart items some times
+
+            if (driver.findElement(By.xpath("//android.widget.Button[@text='Delete']")).isDisplayed()) {
+                itemsInCart = true;
+            }
+
         } catch (Exception e) {
             itemsInCart = false;
         }
@@ -67,12 +76,11 @@ public class CheckOutAndCartPage implements AppiumTestingCore {
     /**
      * Check if the cart is empty, based on text before swiping and wasting time
      */
-    private void checkIfCartEmpty() {
+    private Boolean checkIfCartEmpty() {
         logger.info("Checking if cart Empty");
         if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@text='Your Amazon cart is empty']", 10)) {
-            if (driver.findElement(By.xpath("//android.view.View[@text='Your Amazon cart is empty']")).isDisplayed()) {
-                itemsInCart = false;
-            }
+            return driver.findElement(By.xpath("//android.view.View[@text='Your Amazon cart is empty']")).isDisplayed();
         }
+        return false;
     }
 }

@@ -98,6 +98,9 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
      */
     public Boolean validateDescription() {
         logger.info("Product description from product page" + productDetailsPage.getProductDescription("productDescription"));
+        if (productDetailsPage.getProductDescription("NO DESCRIPTION FOUND").contains("NO DESCRIPTION FOUND")) {
+            return false;
+        }
         List<WebElement> textElementsNotEmpty = driver.findElements(By.xpath("//*[@text!='']"));
 
         for (WebElement element : textElementsNotEmpty) {
@@ -116,6 +119,9 @@ public class CheckoutWorkFlow extends AppiumDriverSetupForTest {
     public Boolean validatePrice() {
         List<WebElement> textElementsNotEmpty = new ArrayList<WebElement>();
         logger.info("Price from product page : " + productDetailsPage.getProductPrice("productPrice"));
+        if (productDetailsPage.getProductPrice("productPrice").contains("NO PRICE FOUND")) {
+            return false;
+        }
 
         if (fluentWaitUtil.isElementDisplayedByXpath(driver, "//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice").trim() + "']", 20)) {
             textElementsNotEmpty = driver.findElements(By.xpath("//android.view.View[@text='" + productDetailsPage.getProductPrice("productPrice").trim() + "']"));
